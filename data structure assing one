@@ -1,0 +1,35 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+   int Marks[70] = {20, 30, 40, 50, 60, 90, 70}, i;
+   
+   cout << "Array Before Insertion:" << endl;
+   for(i = 0; i < 7; i++)
+      cout << "Marks[" << i << "] = " << Marks[i] << endl; 
+      
+   cout << "Inserting element 23 at position 4..." << endl;
+   
+   int pos = 4;
+   for(i = 7; i > pos; i--) {
+      Marks[i] = Marks[i - 1]; 
+   }
+   Marks[pos] = 23;
+
+   cout << "Array After Insertion:" << endl;
+   for(i = 0; i < 8; i++) { 
+      cout << "Marks[" << i << "] = " << Marks[i] << endl;
+   }
+   
+   int deletePos = 3;
+   for(i = deletePos; i < 7; i++) {
+      Marks[i] = Marks[i + 1];
+   }
+   
+   cout << "Array After Deletion:" << endl;
+   for(i = 0; i < 7; i++) { 
+      cout << "Marks[" << i << "] = " << Marks[i] << endl;
+   }
+   
+   return 0;
+}
