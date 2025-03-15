@@ -1,0 +1,184 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Function to swap two elements
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// Bubble Sort
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(&arr[j], &arr[j + 1]);
+            }
+        }
+    }
+}
+
+// Selection Sort
+void selectionSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        swap(&arr[i], &arr[minIndex]);
+    }
+}
+
+// Insertion Sort
+void insertionSort(int arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j] > key) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+// Quick Sort Partition
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+// Quick Sort
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Merge function for Merge Sort
+void merge(int arr[], int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    
+    int L[n1], R[n2];
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j])
+            arr[k++] = L[i++];
+        else
+            arr[k++] = R[j++];
+    }
+
+    while (i < n1)
+        arr[k++] = L[i++];
+
+    while (j < n2)
+        arr[k++] = R[j++];
+}
+
+// Merge Sort
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+// Function to print an array
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Function to copy the original array (to avoid modifying it permanently)
+void copyArray(int src[], int dest[], int n) {
+    for (int i = 0; i < n; i++)
+        dest[i] = src[i];
+}
+
+// Main function
+int main() {
+    int choice;
+    int originalArr[] = {64, 25, 12, 22, 11, 90, 45, 37};
+    int n = sizeof(originalArr) / sizeof(originalArr[0]);
+    int arr[n];
+
+    do {
+        // Restore the original array before each sorting
+        copyArray(originalArr, arr, n);
+
+        printf("\nOriginal array: ");
+        printArray(arr, n);
+
+        printf("\nChoose Sorting Algorithm:\n");
+        printf("1. Bubble Sort\n");
+        printf("2. Selection Sort\n");
+        printf("3. Insertion Sort\n");
+        printf("4. Quick Sort\n");
+        printf("5. Merge Sort\n");
+        printf("6. Exit\n");
+        printf("Enter your choice (1-6): ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                bubbleSort(arr, n);
+                printf("\nSorted array using Bubble Sort: ");
+                break;
+            case 2:
+                selectionSort(arr, n);
+                printf("\nSorted array using Selection Sort: ");
+                break;
+            case 3:
+                insertionSort(arr, n);
+                printf("\nSorted array using Insertion Sort: ");
+                break;
+            case 4:
+                quickSort(arr, 0, n - 1);
+                printf("\nSorted array using Quick Sort: ");
+                break;
+            case 5:
+                mergeSort(arr, 0, n - 1);
+                printf("\nSorted array using Merge Sort: ");
+                break;
+            case 6:
+                printf("\nExiting program...\n");
+                break;
+            default:
+                printf("\nInvalid choice! Please enter a number between 1 and 6.\n");
+                continue;
+        }
+
+        if (choice >= 1 && choice <= 5) {
+            printArray(arr, n);
+        }
+
+    } while (choice != 6);
+
+    return 0;
+}
+  
